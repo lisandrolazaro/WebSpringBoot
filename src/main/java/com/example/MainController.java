@@ -15,7 +15,6 @@ public class MainController {
     @RequestMapping(value = "restCall" , method = RequestMethod.GET)
     @ResponseBody
     public String callSomeRestService() {
-        //return "Hello World";
 
         RestTemplate rt = new RestTemplate();
         rt.getMessageConverters().add(new StringHttpMessageConverter());
