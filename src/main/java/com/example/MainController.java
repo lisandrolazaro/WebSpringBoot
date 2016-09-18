@@ -23,4 +23,14 @@ public class MainController {
         return rt.getForObject(uri, String.class);
 
     }
+
+    @RequestMapping(value = "" , method = RequestMethod.GET)
+    @ResponseBody
+    public String mainPage () {
+
+        return "welcome";
+
+    }
+
+
 }
