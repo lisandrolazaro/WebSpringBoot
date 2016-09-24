@@ -6,6 +6,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
 @Configuration
@@ -29,9 +32,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(username -> readerRepository.findOne(username)
-        );
+    protected void configure(
+            AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(new UserDetailsService() {
+                    @Override
+                    public UserDetails loadUserByUsername(String username)
+                            throws UsernameNotFoundException {
+                        UserDetails userDetails = readerRepository.findOne(username);
+                        if (userDetails != null) {
+                            return userDetails;
+                        }
+                        throw new UsernameNotFoundException("User '" + username + "' not found.");
+                    }
+                });
     }
 
 }
