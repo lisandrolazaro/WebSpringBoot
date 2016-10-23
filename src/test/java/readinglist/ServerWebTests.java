@@ -9,8 +9,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -28,8 +32,17 @@ public class ServerWebTests {
 
   @BeforeClass
   public static void openBrowser() {
-    browser = new FirefoxDriver();
-    browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//    DesiredCapabilities capability = DesiredCapabilities.firefox();
+//    capability.setCapability("marionette", true);
+//    browser = new FirefoxDriver(capability);
+//    browser = new FirefoxDriver();
+
+
+
+
+
+
+//    browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
   }
   
   @Test
@@ -59,15 +72,27 @@ public class ServerWebTests {
   }
 
   @Test
-  @Ignore
-  public void testOpenGoogle(){
-    browser.get("http://www.google.com");
+  public void testOpenGoogle() throws InterruptedException {
+    System.setProperty("webdriver.chrome.driver", "/home/lisandro/dev/tools/chromedriver");
+    WebDriver driver = new ChromeDriver();
+    driver.get("http://www.google.com");
+
+
+
+
+
+    Thread.sleep(5000);  // Let the user actually see something!
+    WebElement searchBox = driver.findElement(By.name("q"));
+    searchBox.sendKeys("ChromeDriver");
+    searchBox.submit();
+    Thread.sleep(5000);  // Let the user actually see something!
+    driver.quit();
   }
   
   @AfterClass
   public static void closeBrowser() {
 
-    browser.quit();
+//    browser.quit();
   }
 
 }
